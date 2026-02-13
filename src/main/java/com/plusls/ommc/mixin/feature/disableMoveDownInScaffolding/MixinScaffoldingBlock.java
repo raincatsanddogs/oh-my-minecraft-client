@@ -47,7 +47,11 @@ public class MixinScaffoldingBlock {
             //#else
             //$$ String itemId = Registry.ITEM.getKey(item).toString();
             //#endif
+            //#if MC > 12006
+            //$$ String itemName = Minecraft.getInstance().player.getMainHandItem().getHoverName().getString();
+            //#else
             String itemName = item.getDescription().getString();
+            //#endif
 
             if (Configs.moveDownInScaffoldingWhiteList
                     .getStrings()

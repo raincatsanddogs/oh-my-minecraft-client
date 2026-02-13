@@ -217,13 +217,18 @@ public class HighlightWaypointHandler {
             texts.add(ComponentCompat.literalCompat(waypointString)
                     .withStyle(ChatFormatting.GREEN)
                     .withStyle(ChatFormatting.UNDERLINE)
+                    //#if MC > 12006
+                    //$$ .withStyle(style -> style.withClickEvent(originalClickEvent)))
+                    //#else
                     .withStyle(style -> style.withClickEvent(originalClickEvent == null ||
                             Configs.forceParseWaypointFromChat.getBooleanValue() ? new ClickEvent(ClickEvent.Action.RUN_COMMAND,
                             String.format("/%s %d %d %d", HighlightWaypointHandler.highlightWaypoint, pos.getX(), pos.getY(), pos.getZ())) :
                             originalClickEvent))
                     .withStyle(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                             ComponentCompat.literal(SharedConstants.getTranslation("highlight_waypoint.tooltip"))
-                    ))));
+                    ))))
+                    //#endif
+                ;
             prevIdx = waypointIdx + waypointString.length();
         }
 

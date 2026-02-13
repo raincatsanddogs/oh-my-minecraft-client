@@ -20,9 +20,9 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
 import top.hendrixshen.magiclib.api.malilib.annotation.Statistic;
+import top.hendrixshen.magiclib.api.malilib.config.MagicConfigHandler;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigFactory;
-import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigHandler;
 import top.hendrixshen.magiclib.impl.malilib.config.option.*;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 import top.hendrixshen.magiclib.util.minecraft.InfoUtil;
@@ -32,7 +32,7 @@ public class Configs {
     private static final MagicConfigFactory cf = Configs.cm.getConfigFactory();
 
     // Generic
-    @Config(category = ConfigCategory.GENERIC)
+    @Config(category = ConfigCategory.DEPRECATED)
     public static MagicConfigHotkey clearWaypoint = Configs.cf.newConfigHotkey("clearWaypoint", "C");
 
     @Config(category = ConfigCategory.GENERIC)
@@ -41,40 +41,40 @@ public class Configs {
     @Config(category = ConfigCategory.GENERIC)
     public static MagicConfigBoolean dontClearChatHistory = Configs.cf.newConfigBoolean("dontClearChatHistory", false);
 
-    @Config(category = ConfigCategory.GENERIC)
+    @Config(category = ConfigCategory.DEPRECATED)
     public static MagicConfigBooleanHotkeyed forceParseWaypointFromChat = Configs.cf.newConfigBooleanHotkeyed("forceParseWaypointFromChat", false);
 
-    @Config(category = ConfigCategory.GENERIC)
+    @Config(category = ConfigCategory.DEPRECATED)
     public static MagicConfigInteger highlightBeamTime = Configs.cf.newConfigInteger("highlightBeamTime", 10, 0, Integer.MAX_VALUE);
 
     @Statistic(hotkey = false)
     @Config(category = ConfigCategory.GENERIC)
     public static MagicConfigHotkey openConfigGui = Configs.cf.newConfigHotkey("openConfigGui", "O,C");
 
-    @Config(category = ConfigCategory.GENERIC)
+    @Config(category = ConfigCategory.DEPRECATED)
     public static MagicConfigBooleanHotkeyed parseWaypointFromChat = Configs.cf.newConfigBooleanHotkeyed("parseWaypointFromChat", true);
 
     @Config(category = ConfigCategory.GENERIC)
     public static MagicConfigHotkey sendLookingAtBlockPos = Configs.cf.newConfigHotkey("sendLookingAtBlockPos", "O,P");
 
-    @Config(category = ConfigCategory.GENERIC)
+    @Config(category = ConfigCategory.DEPRECATED)
     public static MagicConfigBooleanHotkeyed sortInventorySupportEmptyShulkerBoxStack = Configs.cf.newConfigBooleanHotkeyed("sortInventorySupportEmptyShulkerBoxStack", true);
 
-    @Config(category = ConfigCategory.GENERIC)
+    @Config(category = ConfigCategory.DEPRECATED)
     public static MagicConfigHotkey sortInventory = Configs.cf.newConfigHotkey("sortInventory", "R");
 
-    @Config(category = ConfigCategory.GENERIC)
+    @Config(category = ConfigCategory.DEPRECATED)
     public static MagicConfigOptionList sortInventoryShulkerBoxLast = Configs.cf.newConfigOptionList("sortInventoryShulkerBoxLast", SortInventoryShulkerBoxLastType.AUTO);
 
     // Feature
-    @Config(category = ConfigCategory.FEATURE)
+    @Config(category = ConfigCategory.DEPRECATED)
     public static MagicConfigBooleanHotkeyed autoSwitchElytra = Configs.cf.newConfigBooleanHotkeyed("autoSwitchElytra", false);
 
     @Config(category = ConfigCategory.FEATURE)
     public static MagicConfigBooleanHotkeyed betterSneaking = Configs.cf.newConfigBooleanHotkeyed("betterSneaking", false);
 
     @Dependencies(require = @Dependency(value = "minecraft", versionPredicates = ">1.15.2"))
-    @Config(category = ConfigCategory.FEATURE)
+    @Config(category = ConfigCategory.DEPRECATED)
     public static MagicConfigBooleanHotkeyed disableBlocklistCheck = Configs.cf.newConfigBooleanHotkeyed("disableBlocklistCheck", false);
 
     @Config(category = ConfigCategory.FEATURE)
@@ -113,7 +113,7 @@ public class Configs {
     @Config(category = ConfigCategory.FEATURE)
     public static MagicConfigBooleanHotkeyed realSneaking = Configs.cf.newConfigBooleanHotkeyed("realSneaking", false);
 
-    @Config(category = ConfigCategory.FEATURE)
+    @Config(category = ConfigCategory.DEPRECATED)
     public static MagicConfigBooleanHotkeyed removeBreakingCooldown = Configs.cf.newConfigBooleanHotkeyed("removeBreakingCooldown", false);
 
     @Config(category = ConfigCategory.FEATURE)
@@ -171,7 +171,7 @@ public class Configs {
                 //#elseif MC >= 12005 && MC <12007
                 //$$ HitResult hitresult = cameraEntity.pick(clientPlayerInteractionManager.hasInfiniteItems() ? 5.0F : 4.5F, client.getFrameTime(), false);
                 //#elseif MC >= 12100
-                //$$ HitResult hitresult = cameraEntity.pick(clientPlayerInteractionManager.hasInfiniteItems() ? 5.0F : 4.5F, client.getFrameTimeNs(), false);
+                //$$ HitResult hitresult = cameraEntity.pick(4.5F, client.getFrameTimeNs(), false);
                 //#endif
 
                 if (hitresult.getType() == HitResult.Type.BLOCK) {
@@ -204,5 +204,6 @@ public class Configs {
         public static final String GENERIC = "generic";
         public static final String FEATURE = "feature";
         public static final String LIST = "list";
+        public static final String DEPRECATED = "deprecated";
     }
 }

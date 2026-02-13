@@ -1,5 +1,6 @@
 package com.plusls.ommc.mixin.feature.worldEaterMineHelper.fabric;
 
+//#if MC <= 12006
 import com.plusls.ommc.impl.feature.worldEaterMineHelper.WorldEaterMineHelper;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.BlockRenderContext;
 import net.minecraft.client.resources.model.BakedModel;
@@ -90,3 +91,12 @@ public abstract class MixinBlockRenderContext extends AbstractBlockRenderContext
         WorldEaterMineHelper.emitCustomBlockQuads(blockView, state, pos, this.blockInfo.randomSupplier, this);
     }
 }
+//#else
+//$$ import org.spongepowered.asm.mixin.Mixin;
+//$$ import org.spongepowered.asm.mixin.Pseudo;
+//$$
+//$$ @Pseudo
+//$$ @Mixin(targets = "net.fabricmc.fabric.impl.client.indigo.renderer.render.BlockRenderContext", remap = false)
+//$$ public abstract class MixinBlockRenderContext {
+//$$ }
+//#endif

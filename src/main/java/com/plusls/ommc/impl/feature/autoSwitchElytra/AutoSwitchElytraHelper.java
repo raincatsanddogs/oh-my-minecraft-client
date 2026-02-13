@@ -24,7 +24,11 @@ public class AutoSwitchElytraHelper {
         PlayerCompat playerCompat = PlayerCompat.of(player);
         return !playerCompat.isOnGround() &&
                 !player.isFallFlying() &&
+                //#if MC > 12006
+                !player.isInWater() &&
+                //#else
                 !player.isInWaterOrBubble() &&
+                //#endif
                 !player.isInLava() &&
                 !player.hasEffect(MobEffects.LEVITATION);
     }

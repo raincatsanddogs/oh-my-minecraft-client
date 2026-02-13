@@ -64,7 +64,11 @@ public class MixinClientPlayerInteractionManager {
             //#else
             //$$ String itemId = Registry.ITEM.getKey(player.getMainHandItem().getItem()).toString();
             //#endif
+            //#if MC > 12006
+            //$$ String itemName = player.getMainHandItem().getHoverName().getString();
+            //#else
             String itemName = player.getMainHandItem().getItem().getDescription().getString();
+            //#endif
             return Configs.breakScaffoldingWhiteList.getStrings().stream().noneMatch(s -> itemId.contains(s) || itemName.contains(s));
         }
 

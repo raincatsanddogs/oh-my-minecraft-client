@@ -113,10 +113,14 @@ public class SortInventoryHelper {
 
     @Nullable
     public static Tuple<Integer, Integer> getSortRange(AbstractContainerMenu screenHandler, @NotNull Slot mouseSlot) {
-        int mouseIdx = mouseSlot.index;
+        int mouseIdx = screenHandler.slots.indexOf(mouseSlot);
+
+        if (mouseIdx < 0) {
+            return null;
+        }
 
         //#if MC > 11605
-        if (mouseIdx == 0 && mouseSlot.getContainerSlot() != 0) {
+        if (mouseIdx == 0 && mouseSlot.getContainerSlot() != 0 && mouseSlot.getContainerSlot() < screenHandler.slots.size()) {
             mouseIdx = mouseSlot.getContainerSlot();
         }
         //#else
@@ -188,7 +192,11 @@ public class SortInventoryHelper {
         //#endif
         double x = client.mouseHandler.xpos() * window.getGuiScaledWidth() / window.getScreenWidth();
         double y = client.mouseHandler.ypos() * window.getGuiScaledHeight() / window.getScreenHeight();
+        //#if MC > 12006
+        Slot mouseSlot = ((AccessorAbstractContainerScreen) handledScreen).getHoveredSlot();
+        //#else
         Slot mouseSlot = ((AccessorAbstractContainerScreen) handledScreen).invokeFindSlot(x, y);
+        //#endif
 
         if (mouseSlot == null) {
             return null;

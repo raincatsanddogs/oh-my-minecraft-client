@@ -1,5 +1,6 @@
 package com.plusls.ommc.mixin.feature.blockModelNoOffset.fabric;
 
+//#if MC <= 12006
 import com.plusls.ommc.impl.feature.blockModelNoOffset.BlockModelNoOffsetHelper;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainRenderContext;
 import net.minecraft.client.resources.model.BakedModel;
@@ -89,3 +90,11 @@ public abstract class MixinTerrainRenderContext
         }
     }
 }
+//#else
+//$$ import org.spongepowered.asm.mixin.Mixin;
+//$$ import org.spongepowered.asm.mixin.Pseudo;
+//$$ @Pseudo
+//$$ @Mixin(targets = "net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainRenderContext", remap = false)
+//$$ public abstract class MixinTerrainRenderContext {
+//$$ }
+//#endif

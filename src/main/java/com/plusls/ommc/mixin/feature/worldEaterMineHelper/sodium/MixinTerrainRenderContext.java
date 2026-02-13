@@ -1,5 +1,6 @@
 package com.plusls.ommc.mixin.feature.worldEaterMineHelper.sodium;
 
+//#if MC <= 12006
 import com.plusls.ommc.impl.feature.worldEaterMineHelper.WorldEaterMineHelper;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
@@ -54,3 +55,12 @@ public class MixinTerrainRenderContext {
         WorldEaterMineHelper.emitCustomBlockQuads(blockView, state, pos, MiscUtil.cast(randomSupplier), context);
     }
 }
+//#else
+//$$ import org.spongepowered.asm.mixin.Mixin;
+//$$ import org.spongepowered.asm.mixin.Pseudo;
+//$$
+//$$ @Pseudo
+//$$ @Mixin(targets = "me.jellysquid.mods.sodium.render.renderer.TerrainRenderContext", remap = false)
+//$$ public class MixinTerrainRenderContext {
+//$$ }
+//#endif

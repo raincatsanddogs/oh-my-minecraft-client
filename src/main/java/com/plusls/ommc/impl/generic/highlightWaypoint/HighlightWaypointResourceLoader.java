@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -43,7 +44,11 @@ public class HighlightWaypointResourceLoader implements SimpleSynchronousResourc
     @Override
     public void onResourceManagerReload(ResourceManager manager) {
         //#if MC > 11404
+        //#if MC > 12006
+        //$$ Function<ResourceLocation, TextureAtlasSprite> atlas = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS);
+        //#else
         Function<ResourceLocation, TextureAtlasSprite> atlas = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS);
+        //#endif
         HighlightWaypointResourceLoader.targetIdSprite = atlas.apply(HighlightWaypointResourceLoader.targetId);
         //#else
         //$$ targetIdSprite = Minecraft.getInstance().getTextureAtlas().getSprite(HighlightWaypointResourceLoader.targetId);

@@ -12,107 +12,91 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.EntityCompat;
-import top.hendrixshen.magiclib.util.collect.Provider;
 
-//#if MC > 12004
-//$$ import org.spongepowered.asm.mixin.Shadow;
+//#if MC > 12006
+import org.spongepowered.asm.mixin.Shadow;
 //#endif
 
-@Mixin(
-        //#if MC > 11404
-        Player.class
-        //#else
-        //$$ Entity.class
-        //#endif
-)
-
+@Mixin(Player.class)
 public abstract class MixinPlayerEntity {
     @Unique
     private static final float ommc$MAX_STEP_HEIGHT = 1.2F;
 
     @Unique
+    private static final float ommc$MIN_STEP_HEIGHT = 0.001F;
+
+    @Unique
     private float ommc$original_step_height = 0.0F;
 
-    //#if MC > 12004
-    //$$ @Shadow
-    //$$ protected abstract boolean canFallAtLeast(double par1, double par2, float par3);
+    //#if MC > 12006
+    @Shadow
+    protected abstract boolean canFallAtLeast(double d, double e, double f);
     //#endif
 
     @WrapOperation(
             method = "maybeBackOffFromEdge",
             at = @At(
-                    //#if MC > 11903
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/entity/player/Player;maxUpStep()F"
-                    //#else
-                    //$$ value = "FIELD",
-                    //#if MC > 11404
-                    //$$ target = "Lnet/minecraft/world/entity/player/Player;maxUpStep:F"
-                    //#else
-                    //$$ target = "Lnet/minecraft/world/entity/Entity;maxUpStep:F"
-                    //#endif
-                    //#endif
             )
     )
-    private float fakeStepHeight(
-            //#if MC > 11404
-            Player instance,
-            //#else
-            //$$ Entity instance,
-            //#endif
-            Operation<Float> original
-    ) {
+    private float fakeStepHeight(Player instance, Operation<Float> original) {
         EntityCompat entityCompat = EntityCompat.of(instance);
         this.ommc$original_step_height = original.call(instance);
 
-        if (!Configs.betterSneaking.getBooleanValue() || !entityCompat.getLevel().isClientSide()) {
+        if (!entityCompat.getLevel().isClientSide()) {
             return this.ommc$original_step_height;
         }
 
-        return MixinPlayerEntity.ommc$MAX_STEP_HEIGHT;
+        if (Configs.realSneaking.getBooleanValue() && instance.isShiftKeyDown()) {
+            return ommc$MIN_STEP_HEIGHT;
+        }
+
+        if (Configs.betterSneaking.getBooleanValue()) {
+            return ommc$MAX_STEP_HEIGHT;
+        }
+
+        return this.ommc$original_step_height;
     }
 
     @WrapOperation(
             method = "maybeBackOffFromEdge",
             at = @At(
                     value = "INVOKE",
-                    //#if MC > 12004
-                    //$$ target = "Lnet/minecraft/world/entity/player/Player;canFallAtLeast(DDF)Z"
+                    //#if MC > 12006
+                    target = "Lnet/minecraft/world/entity/player/Player;canFallAtLeast(DDD)Z"
                     //#else
-                    target = "Lnet/minecraft/world/level/Level;noCollision(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Z"
+                    //$$ target = "Lnet/minecraft/world/level/Level;noCollision(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Z"
                     //#endif
             )
     )
     private boolean checkFallAtLava(
-            //#if MC > 12004
-            //$$ Player entity,
-            //$$ double d,
-            //$$ double e,
-            //$$ float f,
+            //#if MC > 12006
+            Player entity,
+            double d,
+            double e,
+            double f,
             //#else
-            Level level,
-            Entity entity,
-            AABB aabb,
+            //$$ Level level,
+            //$$ Entity entity,
+            //$$ AABB aabb,
             //#endif
             Operation<Boolean> original
     ) {
-        EntityCompat entityCompat = EntityCompat.of(entity);
-
-        //#if MC > 12004
-        //$$ Level level = entity.level();
+        //#if MC > 12006
+        Level level = entity.level();
         //#endif
 
-        // Patched value if betterSneak is enabled, otherwise vanilla value.
         boolean result = original.call(
-                //#if MC > 12004
-                //$$ entity,
-                //$$ d,
-                //$$ e,
-                //$$ f
-                //#else
-                level,
+                //#if MC > 12006
                 entity,
-                aabb
+                d,
+                e,
+                f
+                //#else
+                //$$ level,
+                //$$ entity,
+                //$$ aabb
                 //#endif
         );
 
@@ -120,14 +104,19 @@ public abstract class MixinPlayerEntity {
             return result;
         }
 
-        // Always vanilla value and bypass WrapOperation chain invoke.
-        //#if MC > 12004
-        //$$ boolean originalResult = this.canFallAtLeast(d, e, this.ommc$original_step_height);
+        //#if MC > 12006
+        boolean originalResult = this.canFallAtLeast(d, e, this.ommc$original_step_height);
         //#else
-        boolean originalResult = level.noCollision(entity, aabb.move(0, MixinPlayerEntity.ommc$MAX_STEP_HEIGHT - this.ommc$original_step_height, 0));
+        //$$ EntityCompat entityCompat = EntityCompat.of(entity);
+        //$$ boolean originalResult = level.noCollision(entity, aabb.move(0, ommc$MAX_STEP_HEIGHT - this.ommc$original_step_height, 0));
         //#endif
 
-        if ((originalResult && !result) && level.getFluidState(entityCompat.getBlockPosition().below()).getType() instanceof LavaFluid) {
+        //#if MC > 12006
+        if ((originalResult && !result) && level.getFluidState(entity.blockPosition().below()).getType() instanceof LavaFluid) {
+        //#else
+        //$$ EntityCompat entityCompat = EntityCompat.of(entity);
+        //$$ if ((originalResult && !result) && level.getFluidState(entityCompat.getBlockPosition().below()).getType() instanceof LavaFluid) {
+        //#endif
             return true;
         }
 

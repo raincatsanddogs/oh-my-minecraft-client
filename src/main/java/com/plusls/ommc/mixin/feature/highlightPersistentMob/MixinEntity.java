@@ -28,7 +28,11 @@ public class MixinEntity {
     private static <T extends Entity> T ommc$getBestEntity(T entity) {
         // Only try to fetch the corresponding server world if the entity is in the actual client world.
         // Otherwise the entity may be for example in Litematica's schematic world.
+        //#if MC > 12006
+        //$$ Level world = entity.level();
+        //#else
         Level world = entity.getCommandSenderWorld();
+        //#endif
         Minecraft client = Minecraft.getInstance();
         T ret = entity;
 
@@ -44,39 +48,41 @@ public class MixinEntity {
             }
         }
 
-        return ret;
+        return ret == null ? entity : ret;
     }
 
     @Inject(
             method = "isCurrentlyGlowing",
-            at = @At("RETURN"),
+            at = @At("HEAD"),
             cancellable = true
     )
     private void checkWanderingTraderEntity(CallbackInfoReturnable<Boolean> cir) {
-        if (Configs.highlightPersistentMob.getBooleanValue() && !cir.getReturnValue()) {
-            Entity entity = ommc$getBestEntity(MiscUtil.cast(this));
+        if (!Configs.highlightPersistentMob.getBooleanValue()) {
+            return;
+        }
 
-            if (entity instanceof Mob) {
-                Mob mobEntity = (Mob) entity;
+        Entity entity = ommc$getBestEntity(MiscUtil.cast(this));
 
-                if (mobEntity.requiresCustomPersistence() || mobEntity.isPersistenceRequired()) {
-                    cir.setReturnValue(true);
-                    return;
-                }
+        if (entity instanceof Mob) {
+            Mob mobEntity = (Mob) entity;
 
-                if (!Configs.highlightPersistentMobClientMode.getBooleanValue()) {
-                    return;
-                }
+            if (mobEntity.requiresCustomPersistence() || mobEntity.isPersistenceRequired()) {
+                cir.setReturnValue(true);
+                return;
+            }
 
-                //#if MC >= 11903
-                String mainHandItemName = BuiltInRegistries.ITEM.getKey(mobEntity.getMainHandItem().getItem()).toString();
-                //#else
-                //$$ String mainHandItemName = Registry.ITEM.getKey(mobEntity.getMainHandItem().getItem()).toString();
-                //#endif
-                if (!mobEntity.getMainHandItem().isEmpty() && ommc$itemBlackList.stream().noneMatch(mainHandItemName::contains) ||
-                        entity.getCustomName() != null) {
-                    cir.setReturnValue(true);
-                }
+            if (!Configs.highlightPersistentMobClientMode.getBooleanValue()) {
+                return;
+            }
+
+            //#if MC >= 11903
+            String mainHandItemName = BuiltInRegistries.ITEM.getKey(mobEntity.getMainHandItem().getItem()).toString();
+            //#else
+            //$$ String mainHandItemName = Registry.ITEM.getKey(mobEntity.getMainHandItem().getItem()).toString();
+            //#endif
+            if ((!mobEntity.getMainHandItem().isEmpty() && ommc$itemBlackList.stream().noneMatch(mainHandItemName::contains)) ||
+                    entity.getCustomName() != null) {
+                cir.setReturnValue(true);
             }
         }
     }

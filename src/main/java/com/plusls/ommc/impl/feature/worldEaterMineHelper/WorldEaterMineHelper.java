@@ -2,8 +2,10 @@ package com.plusls.ommc.impl.feature.worldEaterMineHelper;
 
 import com.plusls.ommc.game.Configs;
 import com.plusls.ommc.mixin.accessor.AccessorBlockStateBase;
+//#if MC <= 12006
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
+//#endif
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.resources.model.BakedModel;
@@ -82,6 +84,10 @@ public class WorldEaterMineHelper {
         return true;
     }
 
+    //#if MC > 12006
+    static public void emitCustomFullBlockQuads(BakedModel model, BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<?> randomSupplier, Object context) {
+    }
+    //#else
     static public void emitCustomFullBlockQuads(FabricBakedModel model, BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<?> randomSupplier, RenderContext context) {
         Block block = state.getBlock();
 
@@ -98,7 +104,12 @@ public class WorldEaterMineHelper {
 
         model.emitBlockQuads(blockView, state, pos, MiscUtil.cast(randomSupplier), context);
     }
+    //#endif
 
+    //#if MC > 12006
+    public static void emitCustomBlockQuads(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<?> randomSupplier, Object context) {
+    }
+    //#else
     public static void emitCustomBlockQuads(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<?> randomSupplier, RenderContext context) {
         Block block = state.getBlock();
 
@@ -113,4 +124,5 @@ public class WorldEaterMineHelper {
             }
         }
     }
+    //#endif
 }

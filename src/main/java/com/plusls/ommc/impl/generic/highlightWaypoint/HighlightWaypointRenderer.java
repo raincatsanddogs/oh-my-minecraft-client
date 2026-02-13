@@ -50,7 +50,11 @@ import org.joml.Matrix4f;
 //#endif
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class HighlightWaypointRenderer implements RenderLevelListener {
+public class HighlightWaypointRenderer
+    //#if MC <= 12006
+    implements RenderLevelListener
+    //#endif
+{
     @Getter
     private static final HighlightWaypointRenderer instance = new HighlightWaypointRenderer();
     private static final ResourceLocation BEAM_LOCATION = ResourceLocationCompat.withDefaultNamespace("textures/entity/beacon_beam.png");
@@ -59,9 +63,12 @@ public class HighlightWaypointRenderer implements RenderLevelListener {
     protected long lastBeamTime = 0;
 
     public static void init() {
+        //#if MC <= 12006
         MagicLib.getInstance().getEventManager().register(RenderLevelListener.class, HighlightWaypointRenderer.instance);
+        //#endif
     }
 
+    //#if MC <= 12006
     @Override
     public void preRenderLevel(Level level, RenderContext context, float partialTicks) {
         // NO-OP
@@ -306,3 +313,4 @@ public class HighlightWaypointRenderer implements RenderLevelListener {
     //$$ }
     //#endif
 }
+    //#endif

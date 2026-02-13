@@ -1,5 +1,6 @@
 package com.plusls.ommc.mixin.feature.worldEaterMineHelper;
 
+//#if MC <= 12006
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.plusls.ommc.impl.feature.worldEaterMineHelper.WorldEaterMineHelper;
@@ -8,6 +9,9 @@ import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.client.renderer.block.model.BlockElementFace;
 import net.minecraft.client.renderer.block.model.BlockElementRotation;
 import net.minecraft.client.renderer.block.model.BlockModel;
+//#if MC > 12006
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+//#endif
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
@@ -203,3 +207,10 @@ public abstract class MixinJsonUnbakedModel implements UnbakedModel {
         cir.setReturnValue(ret);
     }
 }
+//#else
+//$$ import org.spongepowered.asm.mixin.Mixin;
+//$$
+//$$ @Mixin(targets = "net.minecraft.client.renderer.block.model.BlockModel")
+//$$ public abstract class MixinJsonUnbakedModel {
+//$$ }
+//#endif

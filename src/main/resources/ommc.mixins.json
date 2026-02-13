@@ -7,8 +7,12 @@
   "client": [
     "accessor.AccessorAbstractContainerScreen",
     "accessor.AccessorBlock",
+    //#if MC <= 12006
     "accessor.AccessorBlockModel",
+    //#endif
+    //#if MC <= 12006
     "accessor.AccessorBlockRenderContext",
+    //#endif
     "accessor.AccessorBlockStateBase",
     "accessor.AccessorHelpCommand",
     "accessor.AccessorSlot",
@@ -18,14 +22,18 @@
     "api.command.MixinClientSuggestionProvider",
     "api.command.MixinLocalPlayer",
     "api.command.MixinMinecraft",
+    //#if MC <= 12006
     "feature.autoSwitchElytra.MixinLocalPlayer",
+    //#endif
     "feature.betterSneaking.MixinPlayerEntity",
+    //#if MC <= 12006
     "feature.blockModelNoOffset.fabric.MixinTerrainRenderContext",
     "feature.blockModelNoOffset.sodium.MixinBlockRenderer_0_4_9",
     "feature.blockModelNoOffset.sodium.MixinBlockRenderer_0_5",
     "feature.blockModelNoOffset.sodium.MixinBlockRenderer_0_6",
     "feature.blockModelNoOffset.sodium.MixinBlockRendererLegacy",
     "feature.blockModelNoOffset.sodium.MixinTerrainRenderContext",
+    //#endif
     "feature.disableBlocklistCheck.MixinSocialInteractionsManager",
     "feature.disableBreakBlock.MixinClientPlayerInteractionManager",
     "feature.disableBreakScaffolding.MixinClientPlayerInteractionManager",
@@ -34,13 +42,18 @@
     "feature.flatDigger.MixinClientPlayerInteractionManager",
     "feature.forceBreakingCooldown.MixinClientPlayerInteractionManager",
     "feature.highlightEntity.MixinEntity",
+    //#if MC <= 12006
     "feature.highlightLavaSource.canvas.MixinSimpleFluidSpriteProvider",
+    //#endif
+    //#if MC <= 12006
     "feature.highlightLavaSource.sodium.MixinFluidRenderer",
+    //#endif
     "feature.highlightPersistentMob.MixinEntity",
     "feature.highlightWaypoint.MixinChatHud",
     "feature.highlightWaypoint.MixinMutableComponent",
     "feature.preventIntentionalGameDesign.MixinClientPlayerInteractionManager",
     "feature.removeBreakCooldown.MixinClientPlayerInteractionManager",
+    //#if MC <= 12006
     "feature.worldEaterMineHelper.MixinJsonUnbakedModel",
     "feature.worldEaterMineHelper.fabric.MixinBlockRenderContext",
     "feature.worldEaterMineHelper.fabric.MixinTerrainRenderContext",
@@ -50,6 +63,7 @@
     "feature.worldEaterMineHelper.sodium.MixinBlockRenderer_0_6",
     "feature.worldEaterMineHelper.sodium.MixinBlockRendererLegacy",
     "feature.worldEaterMineHelper.sodium.MixinTerrainRenderContext",
+    //#endif
     "generic.dontClearChatHistory.MixinChatHud",
     "generic.sortInventory.MixinAbstractBannerBlockBannerBlock",
     "generic.sortInventory.MixinBedBlock",

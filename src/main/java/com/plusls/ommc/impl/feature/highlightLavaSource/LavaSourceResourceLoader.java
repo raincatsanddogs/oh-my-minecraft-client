@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -56,7 +57,11 @@ public class LavaSourceResourceLoader implements SimpleSynchronousResourceReload
     @Override
     public void onResourceManagerReload(@NotNull ResourceManager manager) {
         //#if MC > 11404
+        //#if MC > 12006
+        //$$ final Function<ResourceLocation, TextureAtlasSprite> atlas = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS);
+        //#else
         final Function<ResourceLocation, TextureAtlasSprite> atlas = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS);
+        //#endif
         lavaSourceStillSprite = atlas.apply(stillSpriteId);
         lavaSourceFlowSprite = atlas.apply(flowingSpriteId);
         //#else
@@ -67,7 +72,11 @@ public class LavaSourceResourceLoader implements SimpleSynchronousResourceReload
         lavaSourceSpites[0] = lavaSourceStillSprite;
         lavaSourceSpites[1] = lavaSourceFlowSprite;
 
+        //#if MC > 12006
+        //$$ defaultLavaSourceStillSprite = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(Blocks.LAVA.defaultBlockState()).particleIcon();
+        //#else
         defaultLavaSourceStillSprite = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(Blocks.LAVA.defaultBlockState()).getParticleIcon();
+        //#endif
         //#if MC > 11404
         defaultLavaSourceFlowSprite = ModelBakery.LAVA_FLOW.sprite();
         //#else

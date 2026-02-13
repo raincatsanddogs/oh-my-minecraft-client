@@ -26,14 +26,11 @@ import java.util.List;
 public class MixinChatHud {
     @Inject(
             method = "clearMessages",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Ljava/util/List;clear()V",
-                    ordinal = 2
-            ), cancellable = true
+            at = @At("HEAD"),
+            cancellable = true
     )
     private void dontClearChatHistory(boolean clearHistory, CallbackInfo ci) {
-        if (Configs.dontClearChatHistory.getBooleanValue()) {
+        if (Configs.dontClearChatHistory.getBooleanValue() && clearHistory) {
             ci.cancel();
         }
     }
