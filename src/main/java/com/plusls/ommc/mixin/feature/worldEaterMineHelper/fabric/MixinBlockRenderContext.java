@@ -1,6 +1,6 @@
 package com.plusls.ommc.mixin.feature.worldEaterMineHelper.fabric;
 
-//#if MC <= 12006
+//#if MC <= 12101
 import com.plusls.ommc.impl.feature.worldEaterMineHelper.WorldEaterMineHelper;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.BlockRenderContext;
 import net.minecraft.client.resources.model.BakedModel;
@@ -92,11 +92,45 @@ public abstract class MixinBlockRenderContext extends AbstractBlockRenderContext
     }
 }
 //#else
+//$$ import com.plusls.ommc.impl.feature.worldEaterMineHelper.WorldEaterMineHelper;
+//$$ import com.plusls.ommc.mixin.accessor.AccessorBlockStateBase;
+//$$ import net.fabricmc.fabric.impl.client.indigo.renderer.render.SimpleBlockRenderContext;
+//$$ import net.minecraft.client.renderer.block.model.BlockStateModel;
+//$$ import net.minecraft.core.BlockPos;
+//$$ import net.minecraft.world.level.BlockAndTintGetter;
+//$$ import net.minecraft.world.level.block.state.BlockState;
 //$$ import org.spongepowered.asm.mixin.Mixin;
-//$$ import org.spongepowered.asm.mixin.Pseudo;
+//$$ import org.spongepowered.asm.mixin.Unique;
+//$$ import org.spongepowered.asm.mixin.injection.At;
+//$$ import org.spongepowered.asm.mixin.injection.Inject;
+//$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //$$
-//$$ @Pseudo
-//$$ @Mixin(targets = "net.fabricmc.fabric.impl.client.indigo.renderer.render.BlockRenderContext", remap = false)
+//$$ @Mixin(value = SimpleBlockRenderContext.class, remap = false)
 //$$ public abstract class MixinBlockRenderContext {
+//$$     @Unique
+//$$     private static final ThreadLocal<Integer> ommc$originalLuminance = ThreadLocal.withInitial(() -> -1);
+//$$
+//$$     @Inject(method = "bufferModel", at = @At("HEAD"))
+//$$     private void ommc$preBufferModel(Object entry, Object vertexConsumers, BlockStateModel model, float red, float green, float blue,
+//$$                                      int light, int overlay, BlockAndTintGetter blockView, BlockPos pos, BlockState state,
+//$$                                      CallbackInfo ci) {
+//$$         if (WorldEaterMineHelper.shouldUseCustomModel(state, pos)) {
+//$$             int originalLuminance = state.getLightEmission();
+//$$             this.ommc$originalLuminance.set(originalLuminance);
+//$$             ((AccessorBlockStateBase) state).setLightEmission(15);
+//$$         }
+//$$     }
+//$$
+//$$     @Inject(method = "bufferModel", at = @At("RETURN"))
+//$$     private void ommc$postBufferModel(Object entry, Object vertexConsumers, BlockStateModel model, float red, float green, float blue,
+//$$                                       int light, int overlay, BlockAndTintGetter blockView, BlockPos pos, BlockState state,
+//$$                                       CallbackInfo ci) {
+//$$         int originalLuminance = this.ommc$originalLuminance.get();
+//$$
+//$$         if (originalLuminance != -1) {
+//$$             ((AccessorBlockStateBase) state).setLightEmission(originalLuminance);
+//$$             this.ommc$originalLuminance.set(-1);
+//$$         }
+//$$     }
 //$$ }
 //#endif

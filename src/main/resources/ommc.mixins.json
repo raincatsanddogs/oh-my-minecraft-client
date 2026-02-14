@@ -6,12 +6,18 @@
   "plugin": "top.hendrixshen.magiclib.impl.mixin.MagicMixinPlugin",
   "client": [
     "accessor.AccessorAbstractContainerScreen",
+    //#if MC > 12006
+    "accessor.AccessorAbstractTerrainRenderContext",
+    //#endif
     "accessor.AccessorBlock",
     //#if MC <= 12006
     "accessor.AccessorBlockModel",
     //#endif
     //#if MC <= 12006
     "accessor.AccessorBlockRenderContext",
+    //#endif
+    //#if MC > 12006
+    "accessor.AccessorBlockRenderInfo",
     //#endif
     "accessor.AccessorBlockStateBase",
     "accessor.AccessorHelpCommand",
@@ -22,9 +28,6 @@
     "api.command.MixinClientSuggestionProvider",
     "api.command.MixinLocalPlayer",
     "api.command.MixinMinecraft",
-    //#if MC <= 12006
-    "feature.autoSwitchElytra.MixinLocalPlayer",
-    //#endif
     "feature.betterSneaking.MixinPlayerEntity",
     //#if MC <= 12006
     "feature.blockModelNoOffset.fabric.MixinTerrainRenderContext",
@@ -52,11 +55,12 @@
     "feature.highlightWaypoint.MixinChatHud",
     "feature.highlightWaypoint.MixinMutableComponent",
     "feature.preventIntentionalGameDesign.MixinClientPlayerInteractionManager",
-    "feature.removeBreakCooldown.MixinClientPlayerInteractionManager",
     //#if MC <= 12006
     "feature.worldEaterMineHelper.MixinJsonUnbakedModel",
+    //#endif
     "feature.worldEaterMineHelper.fabric.MixinBlockRenderContext",
     "feature.worldEaterMineHelper.fabric.MixinTerrainRenderContext",
+    //#if MC <= 12006
     "feature.worldEaterMineHelper.sodium.MixinBlockRenderer_0_4_11",
     "feature.worldEaterMineHelper.sodium.MixinBlockRenderer_0_4_9",
     "feature.worldEaterMineHelper.sodium.MixinBlockRenderer_0_5",
@@ -64,13 +68,7 @@
     "feature.worldEaterMineHelper.sodium.MixinBlockRendererLegacy",
     "feature.worldEaterMineHelper.sodium.MixinTerrainRenderContext",
     //#endif
-    "generic.dontClearChatHistory.MixinChatHud",
-    "generic.sortInventory.MixinAbstractBannerBlockBannerBlock",
-    "generic.sortInventory.MixinBedBlock",
-    "generic.sortInventory.MixinShulkerBoxBlock",
-    "generic.sortInventory.MixinStainedGlassBlock",
-    "generic.sortInventory.MixinStainedGlassPaneBlock",
-    "generic.sortInventory.MixinWoolCarpetBlock"
+    "generic.dontClearChatHistory.MixinChatHud"
   ],
   "injectors": {
     "defaultRequire": 1

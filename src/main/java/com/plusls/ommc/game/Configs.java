@@ -2,12 +2,10 @@ package com.plusls.ommc.game;
 
 import com.google.common.collect.ImmutableList;
 import com.plusls.ommc.SharedConstants;
-import com.plusls.ommc.impl.feature.sortInventory.SortInventoryShulkerBoxLastType;
-import com.plusls.ommc.impl.feature.sortInventory.SortInventoryHelper;
+import com.plusls.ommc.impl.feature.worldEaterMineHelper.WorldEaterMineHelperRenderAxisType;
 import com.plusls.ommc.impl.generic.highlightWaypoint.HighlightWaypointHandler;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
-import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import fi.dy.masa.malilib.interfaces.IValueChangeCallback;
 import fi.dy.masa.malilib.util.restrictions.UsageRestriction;
 import net.minecraft.client.Minecraft;
@@ -24,7 +22,6 @@ import top.hendrixshen.magiclib.api.malilib.config.MagicConfigHandler;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigFactory;
 import top.hendrixshen.magiclib.impl.malilib.config.option.*;
-import top.hendrixshen.magiclib.util.collect.ValueContainer;
 import top.hendrixshen.magiclib.util.minecraft.InfoUtil;
 
 public class Configs {
@@ -32,50 +29,22 @@ public class Configs {
     private static final MagicConfigFactory cf = Configs.cm.getConfigFactory();
 
     // Generic
-    @Config(category = ConfigCategory.DEPRECATED)
-    public static MagicConfigHotkey clearWaypoint = Configs.cf.newConfigHotkey("clearWaypoint", "C");
-
     @Config(category = ConfigCategory.GENERIC)
     public static MagicConfigBoolean debug = Configs.cf.newConfigBoolean("debug", false);
 
     @Config(category = ConfigCategory.GENERIC)
     public static MagicConfigBoolean dontClearChatHistory = Configs.cf.newConfigBoolean("dontClearChatHistory", false);
 
-    @Config(category = ConfigCategory.DEPRECATED)
-    public static MagicConfigBooleanHotkeyed forceParseWaypointFromChat = Configs.cf.newConfigBooleanHotkeyed("forceParseWaypointFromChat", false);
-
-    @Config(category = ConfigCategory.DEPRECATED)
-    public static MagicConfigInteger highlightBeamTime = Configs.cf.newConfigInteger("highlightBeamTime", 10, 0, Integer.MAX_VALUE);
-
     @Statistic(hotkey = false)
     @Config(category = ConfigCategory.GENERIC)
     public static MagicConfigHotkey openConfigGui = Configs.cf.newConfigHotkey("openConfigGui", "O,C");
 
-    @Config(category = ConfigCategory.DEPRECATED)
-    public static MagicConfigBooleanHotkeyed parseWaypointFromChat = Configs.cf.newConfigBooleanHotkeyed("parseWaypointFromChat", true);
-
     @Config(category = ConfigCategory.GENERIC)
     public static MagicConfigHotkey sendLookingAtBlockPos = Configs.cf.newConfigHotkey("sendLookingAtBlockPos", "O,P");
 
-    @Config(category = ConfigCategory.DEPRECATED)
-    public static MagicConfigBooleanHotkeyed sortInventorySupportEmptyShulkerBoxStack = Configs.cf.newConfigBooleanHotkeyed("sortInventorySupportEmptyShulkerBoxStack", true);
-
-    @Config(category = ConfigCategory.DEPRECATED)
-    public static MagicConfigHotkey sortInventory = Configs.cf.newConfigHotkey("sortInventory", "R");
-
-    @Config(category = ConfigCategory.DEPRECATED)
-    public static MagicConfigOptionList sortInventoryShulkerBoxLast = Configs.cf.newConfigOptionList("sortInventoryShulkerBoxLast", SortInventoryShulkerBoxLastType.AUTO);
-
     // Feature
-    @Config(category = ConfigCategory.DEPRECATED)
-    public static MagicConfigBooleanHotkeyed autoSwitchElytra = Configs.cf.newConfigBooleanHotkeyed("autoSwitchElytra", false);
-
     @Config(category = ConfigCategory.FEATURE)
     public static MagicConfigBooleanHotkeyed betterSneaking = Configs.cf.newConfigBooleanHotkeyed("betterSneaking", false);
-
-    @Dependencies(require = @Dependency(value = "minecraft", versionPredicates = ">1.15.2"))
-    @Config(category = ConfigCategory.DEPRECATED)
-    public static MagicConfigBooleanHotkeyed disableBlocklistCheck = Configs.cf.newConfigBooleanHotkeyed("disableBlocklistCheck", false);
 
     @Config(category = ConfigCategory.FEATURE)
     public static MagicConfigBooleanHotkeyed disableBreakBlock = Configs.cf.newConfigBooleanHotkeyed("disableBreakBlock", false);
@@ -113,11 +82,14 @@ public class Configs {
     @Config(category = ConfigCategory.FEATURE)
     public static MagicConfigBooleanHotkeyed realSneaking = Configs.cf.newConfigBooleanHotkeyed("realSneaking", false);
 
-    @Config(category = ConfigCategory.DEPRECATED)
-    public static MagicConfigBooleanHotkeyed removeBreakingCooldown = Configs.cf.newConfigBooleanHotkeyed("removeBreakingCooldown", false);
-
     @Config(category = ConfigCategory.FEATURE)
     public static MagicConfigBooleanHotkeyed worldEaterMineHelper = Configs.cf.newConfigBooleanHotkeyed("worldEaterMineHelper", false);
+
+    @Config(category = ConfigCategory.FEATURE)
+    public static MagicConfigOptionList worldEaterMineHelperRenderAxis = Configs.cf.newConfigOptionList("worldEaterMineHelperRenderAxis", WorldEaterMineHelperRenderAxisType.X);
+
+    @Config(category = ConfigCategory.FEATURE)
+    public static MagicConfigInteger worldEaterMineHelperRenderOffset = Configs.cf.newConfigInteger("worldEaterMineHelperRenderOffset", 5, 0, 15);
 
     // List
     @Config(category = ConfigCategory.LIST)
@@ -149,6 +121,23 @@ public class Configs {
 
     @Config(category = ConfigCategory.LIST)
     public static MagicConfigStringList worldEaterMineHelperWhitelist = Configs.cf.newConfigStringList("worldEaterMineHelperWhitelist", ImmutableList.of("_ore", "minecraft:ancient_debris", "minecraft:obsidian"));
+
+    // Deprecated
+    @Config(category = ConfigCategory.DEPRECATED)
+    public static MagicConfigHotkey clearWaypoint = Configs.cf.newConfigHotkey("clearWaypoint", "C");
+
+    @Config(category = ConfigCategory.DEPRECATED)
+    public static MagicConfigBooleanHotkeyed forceParseWaypointFromChat = Configs.cf.newConfigBooleanHotkeyed("forceParseWaypointFromChat", false);
+
+    @Config(category = ConfigCategory.DEPRECATED)
+    public static MagicConfigInteger highlightBeamTime = Configs.cf.newConfigInteger("highlightBeamTime", 10, 0, Integer.MAX_VALUE);
+
+    @Config(category = ConfigCategory.DEPRECATED)
+    public static MagicConfigBooleanHotkeyed parseWaypointFromChat = Configs.cf.newConfigBooleanHotkeyed("parseWaypointFromChat", true);
+
+    @Dependencies(require = @Dependency(value = "minecraft", versionPredicates = ">1.15.2"))
+    @Config(category = ConfigCategory.DEPRECATED)
+    public static MagicConfigBooleanHotkeyed disableBlocklistCheck = Configs.cf.newConfigBooleanHotkeyed("disableBlocklistCheck", false);
 
     public static void init() {
         Configs.cm.parseConfigClass(Configs.class);
@@ -184,20 +173,16 @@ public class Configs {
             }
         }, true);
 
-
-        MagicConfigManager.setHotkeyCallback(Configs.sortInventory,
-                () -> ValueContainer.ofNullable(SortInventoryHelper.sort()).ifPresent(Runnable::run),
-                false);
-
         Configs.highlightLavaSource.setValueChangeCallback(reloadLevelRender);
         Configs.worldEaterMineHelper.setValueChangeCallback(reloadLevelRender);
+        Configs.worldEaterMineHelperRenderAxis.setValueChangeCallback(option -> Minecraft.getInstance().levelRenderer.allChanged());
+        Configs.worldEaterMineHelperRenderOffset.setValueChangeCallback(option -> Minecraft.getInstance().levelRenderer.allChanged());
 
         // List
         Configs.blockModelNoOffsetListType.setValueChangeCallback(option -> Minecraft.getInstance().levelRenderer.allChanged());
     }
 
     private static void onConfigLoaded(MagicConfigHandler magicConfigHandler) {
-        Configs.sortInventory.getKeybind().setSettings(KeybindSettings.GUI);
     }
 
     public static class ConfigCategory {
